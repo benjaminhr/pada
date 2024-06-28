@@ -18,8 +18,8 @@ function processFile(input) {
   };
 
   const maxValues = [
-    600, // Sub-bass
-    2000, // Bass
+    500, // Sub-bass
+    1800, // Bass
     2500, // Low-mids
     10000, // Mids
     10000, // High-mids
@@ -132,8 +132,21 @@ function processFile(input) {
         const value = frequencyValues[i % frequencyValues.length];
         const maxValue = maxValues[i % maxValues.length];
         const scale = 0.5 + (value / maxValue) * 1.0;
-        blocks[i].style.transform = `scale(${Math.min(scale, 1.3)})`;
+        blocks[i].style.transform = `scale(${Math.max(
+          0.5,
+          Math.min(scale, 1.3)
+        )})`; // scale range
+        blocks[i].style.transform = `rotate(${
+          Math.max(0.5, Math.min(scale, 1.5)) * 100
+        }deg)`;
         blocks[i].style.opacity = Math.min(scale, 1);
+        blocks[i].style.filter = `blur(${(1 - scale) * 10}px)`;
+        // blocks[i].style.top = `${
+        //   scale - 1 * window.innerHeight - window.innerHeight / 2
+        // }px`;
+        // blocks[i].style.left = `${
+        //   scale - 1 * window.innerWidth - window.innerWidth / 2
+        // }px`;
       }
 
       setTimeout(getFrequencyData, 20);
@@ -148,7 +161,7 @@ function processFile(input) {
     const x = e.clientX - rect.left;
     const progress = Math.max(0, Math.min(x / rect.width, 1));
     scrubber.style.left = progress * rect.width + "px";
-    scrubberDraggable.style.left = progress * rect.width - 9 + "px"; // Adjust the draggable area position
+    scrubberDraggable.style.left = progress * rect.width - 9 + "px";
     currentTime = progress * trackDuration;
   }
 
@@ -193,7 +206,9 @@ window.onload = () => {
     for (let i = 0; i < totalBlocks; i++) {
       const block = document.createElement("div");
 
-      block.style.backgroundColor = palette[i % palette.length];
+      // block.style.backgroundColor = palette[i % palette.length];
+      block.style.backgroundColor =
+        palette[Math.floor(Math.random() * palette.length + 0)];
       blocksContainer.appendChild(block);
     }
   }
