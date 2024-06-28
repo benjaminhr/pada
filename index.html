@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="blocks"></div>
+
+      <div class="bottom">
+        <div id="scrubber-container">
+          <div id="scrubber"></div>
+          <div id="scrubber-draggable"></div>
+          <div id="line"></div>
+        </div>
+
+        <input
+          type="file"
+          id="actual-btn"
+          accept=".mp3"
+          onchange="processFile(this)"
+        />
+        <label for="actual-btn">🎶</label>
+      </div>
+    </div>
+
+    <script src="analyzer.js"></script>
+  </body>
+</html>
