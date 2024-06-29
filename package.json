@@ -2,7 +2,7 @@
   "name": "pada",
   "version": "1.0.0",
   "scripts": {
-    "build": "parcel build"
+    "build": "parcel build src/index.html"
   },
   "keywords": [],
   "author": "",
