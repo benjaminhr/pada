@@ -1,31 +1,11 @@
-// Initialize variables for HTML elements
+import { ranges, maxValues } from "./constants.js";
+
 const micButton = document.getElementById("mic-button");
 const fileInput = document.getElementById("actual-btn");
 const blocksContainer = document.querySelector(".blocks");
 const scrubber = document.getElementById("scrubber");
 const scrubberDraggable = document.getElementById("scrubber-draggable");
 const scrubberContainer = document.getElementById("scrubber-container");
-
-// Define frequency ranges and max values for visualization
-const ranges = {
-  subBass: { start: 20, end: 60 },
-  bass: { start: 60, end: 250 },
-  lowMids: { start: 250, end: 500 },
-  mids: { start: 500, end: 2000 },
-  highMids: { start: 2000, end: 4000 },
-  lowerHighs: { start: 4000, end: 6000 },
-  highs: { start: 6000, end: 20000 },
-};
-
-const maxValues = [
-  500, // Sub-bass
-  1800, // Bass
-  2500, // Low-mids
-  10000, // Mids
-  10000, // High-mids
-  8000, // Lower highs
-  20000, // Highs
-];
 
 // Function to process the uploaded MP3 file
 function processFile(input) {
@@ -200,6 +180,25 @@ window.onload = () => {
     "#296381",
     "#184769",
   ].reverse();
+
+  const backgroundPalette = [
+    "#FFFFF0", // Ivory
+    "#E6E6FA", // Lavender
+    "#F0FFF0", // Honeydew
+    "#FFF5EE", // Seashell
+    "#FAFAD2", // Light Goldenrod Yellow
+    "#F5F5DC", // Beige
+    "#FDF5E6", // Old Lace
+    "#FFF8DC", // Cornsilk
+  ];
+
+  let currentIndex = 0;
+  function changeBackgroundColor() {
+    document.body.style.backgroundColor = backgroundPalette[currentIndex];
+    currentIndex = (currentIndex + 1) % backgroundPalette.length;
+  }
+  setInterval(changeBackgroundColor, 3000);
+  changeBackgroundColor();
 
   function createGrid() {
     blocksContainer.innerHTML = "";
