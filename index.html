@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="events.js"></script>
   </head>
   <body>
     <div class="container">
@@ -17,17 +18,10 @@
           <div id="line"></div>
         </div>
 
-        <input
-          type="file"
-          id="actual-btn"
-          accept=".mp3"
-          onchange="processFile(this)"
-        />
+        <input type="file" id="actual-btn" accept=".mp3" />
         <label for="actual-btn">🎶</label>
         <label id="mic-button">🎤</label>
       </div>
     </div>
-
-    <script type="module" src="analyzer.js"></script>
   </body>
 </html>
