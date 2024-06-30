@@ -7,32 +7,43 @@ const scrubber = document.getElementById("scrubber");
 const scrubberDraggable = document.getElementById("scrubber-draggable");
 const scrubberContainer = document.getElementById("scrubber-container");
 
-// Function to process the uploaded MP3 file
+let audioContext;
+let source;
+let analyser;
+let buffer;
+let trackDuration;
+let isDragging = false;
+let startTime = 0;
+let currentTime = 0;
+
 function processFile(input) {
   const file = input.files[0];
   if (!file) return;
 
-  const audioContext = new AudioContext();
+  if (!audioContext) {
+    audioContext = new AudioContext();
+  }
+
   const reader = new FileReader();
 
   const blocks = [...document.querySelector(".blocks").children];
-
   const scrubber = document.getElementById("scrubber");
   const scrubberDraggable = document.getElementById("scrubber-draggable");
   const scrubberContainer = document.getElementById("scrubber-container");
 
-  let source;
-  let analyser;
-  let trackDuration;
-  let isDragging = false;
-  let startTime = 0;
-  let currentTime = 0;
-  let buffer;
+  // Function to stop the previous audio
+  function stopPreviousAudio() {
+    if (source) {
+      source.stop();
+      source.disconnect();
+    }
+  }
 
   reader.onload = function (e) {
     audioContext.decodeAudioData(e.target.result, function (decodedBuffer) {
       buffer = decodedBuffer;
       trackDuration = buffer.duration;
+      currentTime = 0;
       startPlayback();
       startTime = audioContext.currentTime;
 
@@ -55,6 +66,7 @@ function processFile(input) {
   reader.readAsArrayBuffer(file);
 
   function startPlayback() {
+    stopPreviousAudio(); // Stop any previously playing audio
     source = audioContext.createBufferSource();
     source.buffer = buffer;
 
@@ -154,7 +166,7 @@ function processFile(input) {
   function onMouseUp() {
     if (isDragging) {
       isDragging = false;
-      source.stop();
+      stopPreviousAudio();
       startPlayback();
 
       window.removeEventListener("mousemove", onMouseMove);
@@ -210,10 +222,7 @@ window.onload = () => {
 
     for (let i = 0; i < totalBlocks; i++) {
       const block = document.createElement("div");
-
       block.style.backgroundColor = palette[i % palette.length];
-      // block.style.backgroundColor =
-      //   palette[Math.floor(Math.random() * palette.length + 0)];
       blocksContainer.appendChild(block);
     }
   }
@@ -225,22 +234,17 @@ window.onload = () => {
     processFile(this);
   });
 
-  // Function to handle mic button click and start microphone input
   function startMicrophoneInput() {
     console.log("Starting microphone input");
     const audioContext = new AudioContext();
     let analyser = audioContext.createAnalyser();
     analyser.fftSize = 1024;
 
-    // Get microphone audio stream
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then(function (stream) {
         const microphone = audioContext.createMediaStreamSource(stream);
         microphone.connect(analyser);
-        // analyser.connect(audioContext.destination);
-
-        // Start analyzing and visualizing microphone input
         analyzeMicrophoneInput();
       })
       .catch(function (err) {
@@ -254,7 +258,6 @@ window.onload = () => {
       function getFrequencyData() {
         analyser.getByteFrequencyData(dataArray);
 
-        // Calculate sums for each frequency range
         let subBassSum = 0;
         let bassSum = 0;
         let lowMidsSum = 0;
@@ -286,7 +289,6 @@ window.onload = () => {
           }
         }
 
-        // Calculate frequency values
         const frequencyValues = [
           subBassSum,
           bassSum,
@@ -297,7 +299,6 @@ window.onload = () => {
           highsSum,
         ];
 
-        // Update UI with frequency values
         const blocks = [...blocksContainer.children];
         blocks.forEach((block, index) => {
           const value = frequencyValues[index % frequencyValues.length];
@@ -316,15 +317,12 @@ window.onload = () => {
           block.style.filter = `blur(${blurValue}px)`;
         });
 
-        // Schedule next update
         setTimeout(getFrequencyData, 20);
       }
 
-      // Start frequency analysis
       getFrequencyData();
     }
   }
 
-  // Event listener for mic button click to start microphone input
   micButton.addEventListener("click", startMicrophoneInput);
 };
