@@ -5,10 +5,9 @@ let audioContext;
 let source;
 let analyser;
 let buffer;
-let trackDuration;
-let isDragging = false;
 let startTime = 0;
-let currentTime = 0;
+window.currentTime = 0;
+window.trackDuration = 0;
 
 function processFile(
   input,
@@ -29,15 +28,15 @@ function processFile(
   reader.onload = function (e) {
     audioContext.decodeAudioData(e.target.result, function (decodedBuffer) {
       buffer = decodedBuffer;
-      trackDuration = buffer.duration;
-      currentTime = 0;
+      window.trackDuration = buffer.duration;
+      window.currentTime = 0;
       startPlayback();
       startTime = audioContext.currentTime;
 
       function updateScrubber() {
-        if (!isDragging) {
-          currentTime = audioContext.currentTime - startTime;
-          const progress = currentTime / trackDuration;
+        if (!window.isDragging) {
+          window.currentTime = audioContext.currentTime - startTime;
+          const progress = window.currentTime / window.trackDuration;
           updateScrubberPosition(
             scrubber,
             scrubberDraggable,
@@ -68,9 +67,9 @@ function startPlayback() {
 
   source.connect(analyser);
   analyser.connect(audioContext.destination);
-  source.start(0, currentTime);
+  source.start(0, window.currentTime);
 
-  startTime = audioContext.currentTime - currentTime;
+  startTime = audioContext.currentTime - window.currentTime;
 }
 
 function stopPreviousAudio() {
@@ -97,4 +96,4 @@ function startMicrophoneInput(blocks) {
     });
 }
 
-export { processFile, startMicrophoneInput };
+export { stopPreviousAudio, startPlayback, processFile, startMicrophoneInput };

@@ -1,6 +1,7 @@
 import { processFile, startMicrophoneInput } from "./audio.js";
 import { changeBackgroundColor, createGrid } from "./ui.js";
-import { ranges, maxValues } from "./constants.js"; // Ensure constants are imported if needed in audio.js or frequency.js
+import { ranges, maxValues } from "./constants.js";
+import { startPlayback } from "./audio.js";
 
 const micButton = document.getElementById("mic-button");
 const fileInput = document.getElementById("actual-btn");
@@ -31,24 +32,23 @@ window.onload = () => {
   window.onresize = createGrid;
 
   scrubberDraggable.addEventListener("mousedown", () => {
-    let isDragging = true;
+    window.isDragging = true;
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
 
     function onMouseMove(e) {
-      if (!isDragging) return;
+      if (!window.isDragging) return;
       const rect = scrubberContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const progress = Math.max(0, Math.min(x / rect.width, 1));
       scrubber.style.left = progress * rect.width + "px";
       scrubberDraggable.style.left = progress * rect.width - 9 + "px";
-      currentTime = progress * trackDuration;
+      window.currentTime = progress * window.trackDuration;
     }
 
     function onMouseUp() {
-      if (isDragging) {
+      if (window.isDragging) {
         isDragging = false;
-        stopPreviousAudio();
         startPlayback();
 
         window.removeEventListener("mousemove", onMouseMove);
