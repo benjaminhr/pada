@@ -1,4 +1,6 @@
 const blocksContainer = document.querySelector(".blocks");
+
+/*
 const palette = [
   "#FCDC94",
   "#C8CFA0",
@@ -8,7 +10,17 @@ const palette = [
   "#296381",
   "#184769",
 ].reverse();
+*/
 
+const palette = [
+  "#FCDC94", // Light and bright contrast to dark colors
+  "#C8CFA0", // Light and bright contrast to dark colors
+  "#78ABA8", // Light and bright contrast to dark colors
+  "#4D9DB4", // Light and bright contrast to dark colors
+  "#3A7F9C", // Light and bright contrast to dark colors
+  "#296381", // Light and bright contrast to dark colors
+  "#184769", // Light and bright contrast to dark colors
+];
 /*
 const backgroundPalette = [
   "#FFFFF0",
