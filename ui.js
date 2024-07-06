@@ -9,6 +9,7 @@ const palette = [
   "#184769",
 ].reverse();
 
+/*
 const backgroundPalette = [
   "#FFFFF0",
   "#E6E6FA",
@@ -18,6 +19,19 @@ const backgroundPalette = [
   "#F5F5DC",
   "#FDF5E6",
   "#FFF8DC",
+];
+*/
+
+
+const darkBackgroundPalette = [
+  "#2F4F4F", // Dark Slate Grey
+  "#4B0082", // Indigo
+  "#006400", // Dark Green
+  "#8B4513", // Saddle Brown
+  "#8B0000", // Dark Red
+  "#556B2F", // Dark Olive Green
+  "#8B4513", // Dark Orange
+  "#8B008B", // Dark Magenta
 ];
 
 let currentIndex = 0;
