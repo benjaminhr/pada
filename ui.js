@@ -35,7 +35,7 @@ const backgroundPalette = [
 */
 
 
-const darkBackgroundPalette = [
+const backgroundPalette = [
   "#2F4F4F", // Dark Slate Grey
   "#4B0082", // Indigo
   "#006400", // Dark Green
